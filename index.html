@@ -56,6 +56,17 @@
     font-size: 0.85rem;
     margin-bottom: 22px;
     padding: 10px;
+    overflow: hidden;
+  }
+  .video-slot {
+    margin-bottom: 22px;
+  }
+  .video-slot iframe {
+    width: 100%;
+    max-width: 300px;
+    height: 250px;
+    border: 0;
+    border-radius: 10px;
   }
   .timer-ring {
     width: 64px;
@@ -105,36 +116,75 @@
     font-size: 0.9rem;
     margin-top: 10px;
   }
+  .project-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .project-list a {
+    display: block;
+    padding: 12px 14px;
+    background: #20242e;
+    border-radius: 10px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.95rem;
+    border: 1px solid #2a2f3a;
+    transition: background 0.15s;
+  }
+  .project-list a:hover {
+    background: #262b36;
+  }
 </style>
 </head>
+
+<!-- Popunder ad removed earlier: it hijacked the Continue button click -->
 <body>
 
   <div class="card">
     <h1 id="titleText">Your link is almost ready</h1>
     <p class="sub" id="statusText">Please wait a few seconds...</p>
 
-    <div class="ad-slot" id="adSlot">
-      <script>
-        atOptions = {
-          'key' : '5bb7438de966c30b1ddd4ff87bdac9c8',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
-      </script>
-      <script src="https://www.highperformanceformat.com/5bb7438de966c30b1ddd4ff87bdac9c8/invoke.js"></script>
-    </div>
+    <div id="adArea">
+      <div class="ad-slot" id="adSlot">
+        <script>
+          atOptions = {
+            'key' : '5bb7438de966c30b1ddd4ff87bdac9c8',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        </script>
+        <script src="https://www.highperformanceformat.com/5bb7438de966c30b1ddd4ff87bdac9c8/invoke.js"></script>
+      </div>
 
-    <!-- Native Banner ad -->
-    <div id="container-3aff2e820639b74a5a281ec2c1045e43" style="margin-bottom: 22px;"></div>
-    <script async="async" data-cfasync="false" src="https://pl30444192.effectivecpmnetwork.com/3aff2e820639b74a5a281ec2c1045e43/invoke.js"></script>
+      <!-- Native Banner ad -->
+      <div id="container-3aff2e820639b74a5a281ec2c1045e43" style="margin-bottom: 22px;"></div>
+      <script async="async" data-cfasync="false" src="https://pl30444192.effectivecpmnetwork.com/3aff2e820639b74a5a281ec2c1045e43/invoke.js"></script>
+
+      <!-- HilltopAds video ad -->
+      <div class="video-slot" id="videoSlot">
+        <iframe
+          src="https://tiny-ambition.com/dKmsF/zad.GNNgv-ZQGGUk/Wevmu9kuVZXUbl_kZPmTIcwypNTDJA/3POtDiUntBNtzlIA0DMnDbcW4xOEQA"
+          allow="autoplay"
+          scrolling="no">
+        </iframe>
+      </div>
+    </div>
 
     <div class="timer-ring" id="timerRing" style="--pct:0">
       <span id="timerNum">8</span>
     </div>
 
     <a href="#" class="btn" id="continueBtn">Continue to link</a>
+
+    <!-- Filled in by JS only when no project matched -->
+    <ul class="project-list" id="projectList" style="display:none;"></ul>
   </div>
 
 <script>
@@ -144,17 +194,17 @@
   // The "id" is what goes in the URL, e.g. ?id=project1
   // ---------------------------------------------------------------
   const PROJECTS = {
-  "naruto":       "https://github.com/meghamittal0920/Naruto-SageMode",
-  "zoro":         "https://github.com/meghamittal0920/Zoro-King-of-hell",
-  "demonslayer":  "https://github.com/meghamittal0920/Demon-Slayer-Yorichi-Kokoshibo-",
-  "jjk-sakuna":   "https://github.com/meghamittal0920/JJK-Sakuna",
-  "impact":       "https://github.com/meghamittal0920/Imapact",
-  "onepiece":     "https://github.com/meghamittal0920/One-Piece-3D-Website",
-  "gojo":         "https://github.com/Meghamittal0920/Gojo",
-  "luffy":        "https://github.com/SinghalAyushh/One-Piece",
-  "goku":      "https://github.com/Meghamittal0920/goku",
-  "portfolio":    "https://github.com/Meghamittal0920/Meghamittal0920/blob/main/animated-github-profile-guide.pdf"
-};
+    "naruto":       "https://github.com/meghamittal0920/Naruto-SageMode",
+    "zoro":         "https://github.com/meghamittal0920/Zoro-King-of-hell",
+    "demonslayer":  "https://github.com/meghamittal0920/Demon-Slayer-Yorichi-Kokoshibo-",
+    "jjk-sakuna":   "https://github.com/meghamittal0920/JJK-Sakuna",
+    "impact":       "https://github.com/meghamittal0920/Imapact",
+    "onepiece":     "https://github.com/meghamittal0920/One-Piece-3D-Website",
+    "gojo":         "https://github.com/Meghamittal0920/Gojo",
+    "luffy":        "https://github.com/SinghalAyushh/One-Piece",
+    "goku":         "https://github.com/Meghamittal0920/goku",
+    "portfolio":    "https://github.com/Meghamittal0920/Meghamittal0920/blob/main/animated-github-profile-guide.pdf"
+  };
 
   const COUNTDOWN_SECONDS = 8;
   // ---------------------------------------------------------------
@@ -163,6 +213,12 @@
 
   function normalize(str) {
     return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  function prettyName(key) {
+    return key
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
   // 1) Try the clean ?id=project1 style first
@@ -194,14 +250,26 @@
   const btn = document.getElementById('continueBtn');
   const statusText = document.getElementById('statusText');
   const titleText = document.getElementById('titleText');
+  const projectList = document.getElementById('projectList');
 
   if (!destination) {
-    // No valid project id in the URL
-    titleText.textContent = "Link not found";
-    statusText.innerHTML = '<span class="error">This link is invalid or missing a project ID.</span>';
-    document.getElementById('adSlot').style.display = 'none';
+    // No project matched (bad/missing id, or user landed on the bare page).
+    // Instead of a dead-end error, show every project as its own ad-page link,
+    // so the visitor still watches an ad before reaching a project.
+    titleText.textContent = "Browse projects";
+    statusText.textContent = "Pick a project below to continue:";
     ring.style.display = 'none';
     btn.style.display = 'none';
+
+    Object.keys(PROJECTS).forEach((key) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `?id=${encodeURIComponent(key)}`;
+      a.textContent = prettyName(key);
+      li.appendChild(a);
+      projectList.appendChild(li);
+    });
+    projectList.style.display = 'flex';
   } else {
     btn.href = destination;
     let secondsLeft = COUNTDOWN_SECONDS;
@@ -218,8 +286,22 @@
         statusText.textContent = 'Your link is ready.';
       }
     }, 1000);
+
+    // Mitigation: Social Bar (added below) sometimes hijacks the first click
+    // anywhere on the page. Capturing the click on our own button first and
+    // stopping it from bubbling further reduces (does not 100% guarantee
+    // eliminate) that conflict. Test this after adding Social Bar.
+    btn.addEventListener('click', function (e) {
+      e.stopImmediatePropagation();
+    }, true);
   }
 </script>
 
+<!-- Social Bar ad — re-added per request.
+     Heads-up: this format previously intercepted clicks anywhere on the
+     page, including the Continue button. A mitigation is included above,
+     but test the Continue button carefully after this goes live — if it
+     still misfires, this is the block to remove again. -->
+<script src="https://pl30444191.effectivecpmnetwork.com/02/7b/76/027b76d48e294fa163ab4852a9c359ef.js"></script>
 </body>
 </html>
