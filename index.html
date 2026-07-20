@@ -189,67 +189,12 @@
 
 <!-- Google IMA SDK: reads the HillTop VAST tag and actually plays the ad -->
 <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
-<script>
-  (function () {
-    var HILLTOP_VAST_TAG = "https://tiny-ambition.com/dBmGFzz.dRGbNwvhZgGXUD/ke_mw9/uFZ/UIl/k/PnTzcoydNLD/AO3JO/DOUgt/NUzWIk0dMTDOcJ4/OfQQ";
-
-    var videoContent = document.getElementById('adVideoContentEl');
-    var adContainer = document.getElementById('adContainerDiv');
-    var adsLoader, adsManager, adDisplayContainer;
-
-    function initHilltopVideoAd() {
-      if (typeof google === 'undefined' || !google.ima) return; // IMA SDK failed to load (e.g. adblock)
-
-      adDisplayContainer = new google.ima.AdDisplayContainer(adContainer, videoContent);
-      adsLoader = new google.ima.AdsLoader(adDisplayContainer);
-
-      adsLoader.addEventListener(
-        google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,
-        onAdsManagerLoaded,
-        false
-      );
-      adsLoader.addEventListener(
-        google.ima.AdErrorEvent.Type.AD_ERROR,
-        onAdError,
-        false
-      );
-
-      var adsRequest = new google.ima.AdsRequest();
-      adsRequest.adTagUrl = HILLTOP_VAST_TAG;
-      adsRequest.linearAdSlotWidth = 300;
-      adsRequest.linearAdSlotHeight = 250;
-      adsRequest.nonLinearAdSlotWidth = 300;
-      adsRequest.nonLinearAdSlotHeight = 150;
-
-      adDisplayContainer.initialize();
-      adsLoader.requestAds(adsRequest);
-    }
-
-    function onAdsManagerLoaded(adsManagerLoadedEvent) {
-      adsManager = adsManagerLoadedEvent.getAdsManager(videoContent);
-      adsManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, onAdError);
-      try {
-        adsManager.init(300, 250, google.ima.ViewMode.NORMAL);
-        adsManager.start();
-      } catch (e) {
-        onAdError(e);
-      }
-    }
-
-    function onAdError() {
-      // No ad filled, or blocked — just hide the empty video box so it
-      // doesn't leave a black rectangle on the page.
-      var el = document.getElementById('adVideoContainer');
-      if (el) el.style.display = 'none';
-      if (adsManager) adsManager.destroy();
-    }
-
-    // Autoplay policies generally require the video to be muted (already
-    // set above) to play without a click. Kick it off once the page loads.
-    window.addEventListener('load', initHilltopVideoAd);
-  })();
-</script>
-
+<script async type="application/javascript" src="https://a.pemsrv.com/ad-provider.js"></script> 
+ <ins class="eas6a97888e33" data-zoneid="5981542"></ins> 
+ <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
+<script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
+ <ins class="eas6a97888e37" data-zoneid="5981546"></ins> 
+ <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
 <script>
   // ---------------------------------------------------------------
   // PROJECT LOOKUP TABLE
@@ -366,30 +311,7 @@
      but test the Continue button carefully after this goes live — if it
      still misfires, this is the block to remove again. -->
 <script src="https://pl30444191.effectivecpmnetwork.com/02/7b/76/027b76d48e294fa163ab4852a9c359ef.js"></script>
-<script>
-(function(rasm){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = rasm || {};
-s.src = "\/\/massivesalad.com\/brXEVxsrd.GOlG0zYLWlcd\/JeUmk9\/u\/ZAUWlykWP\/TAczy\/NTDZA\/4_MYTGcrtgNhzuI\/0yM\/DZgGyXMBQt";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
-  <script>
-(function(chfoay){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = chfoay || {};
-s.src = "\/\/massivesalad.com\/b_XbV.skdMGnlW0kYyW_co\/Beomz9OuDZtUxlNkRP\/TTctyNNlDXAu4\/NfzWMZt_N\/zbIA0hMODlgy3\/NFwB";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
+
   <script async type="application/javascript" src="https://a.magsrv.com/ad-provider.js"></script> 
  <ins class="eas6a97888e31" data-zoneid="5981056" data-keywords="keywords" data-sub="123450000"></ins> 
  <script>(AdProvider = window.AdProvider || []).push({"serve": {}});</script>
