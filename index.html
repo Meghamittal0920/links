@@ -106,8 +106,6 @@
     margin-top: 10px;
   }
 </style>
-<!-- Popunder ad -->
-<script src="https://pl30444189.effectivecpmnetwork.com/ce/db/62/cedb6293b2be868eccecc29db1546b3c.js"></script>
 </head>
 <body>
 
@@ -152,19 +150,45 @@
     "jjk-sakuna":  "https://meghamittal0920.github.io/JJK-Sakuna/",
     "impact":      "https://meghamittal0920.github.io/Imapact/",
     "onepiece":    "https://meghamittal0920.github.io/One-Piece-3D-Website/",
-        "portfolio": "https://github.com/Meghamittal0920/Meghamittal0920/blob/main/animated-github-profile-guide.pdf",
+    "gojo":        "https://your-real-link-for-gojo-project.com",
+    "portfolio": "https://github.com/Meghamittal0920/Meghamittal0920/blob/main/animated-github-profile-guide.pdf",
     "luffy": "https://github.com/SinghalAyushh/One-Piece",
     "gojo": "https://github.com/Meghamittal0920/Gojo",
-    "goku": "https://github.com/Meghamittal0920/Goku"
-    
+   
   };
 
   const COUNTDOWN_SECONDS = 8;
   // ---------------------------------------------------------------
 
   const params = new URLSearchParams(window.location.search);
-  const projectId = params.get('id');
-  const destination = PROJECTS[projectId];
+
+  function normalize(str) {
+    return str.toLowerCase().replace(/[^a-z0-9]/g, '');
+  }
+
+  // 1) Try the clean ?id=project1 style first
+  let projectId = params.get('id');
+  let destination = projectId ? PROJECTS[projectId] : null;
+
+  // 2) Fall back to matching Instagram's auto "source" param,
+  //    e.g. ?source=Gojo-Repo-Here-🌀:6a5dae0251800bbc2e606996
+  //    We take the text before the colon, strip "-Repo-Here" and symbols,
+  //    then check if it matches (or contains) any PROJECTS key.
+  if (!destination && params.get('source')) {
+    const rawSource = decodeURIComponent(params.get('source'));
+    const namePart = rawSource.split(':')[0];
+    const normalizedSource = normalize(namePart);
+
+    const matchKey = Object.keys(PROJECTS).find((key) => {
+      const normalizedKey = normalize(key);
+      return normalizedSource.includes(normalizedKey) || normalizedKey.includes(normalizedSource);
+    });
+
+    if (matchKey) {
+      projectId = matchKey;
+      destination = PROJECTS[matchKey];
+    }
+  }
 
   const ring = document.getElementById('timerRing');
   const num = document.getElementById('timerNum');
@@ -198,7 +222,5 @@
   }
 </script>
 
-<!-- Social Bar ad -->
-<script src="https://pl30444191.effectivecpmnetwork.com/02/7b/76/027b76d48e294fa163ab4852a9c359ef.js"></script>
 </body>
 </html>
