@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting your link ready...</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #171a21;
+    --text: #eef0f3;
+    --muted: #8b93a1;
+    --accent: #4f8cff;
+    --danger: #ff5c5c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 20px;
+  }
+  .card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--card);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  }
+  h1 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+  }
+  p.sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin: 0 0 22px;
+  }
+  .ad-slot {
+    background: #20242e;
+    border: 1px dashed #3a3f4c;
+    border-radius: 10px;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 22px;
+    padding: 10px;
+  }
+  .timer-ring {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+    background: conic-gradient(var(--accent) calc(var(--pct, 0) * 1%), #2a2f3a 0);
+    transition: background 0.3s linear;
+  }
+  .timer-ring span {
+    background: var(--card);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn {
+    display: inline-block;
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    opacity: 0.4;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .btn.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .btn:active { transform: scale(0.98); }
+  .error {
+    color: var(--danger);
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <h1 id="titleText">Your link is almost ready</h1>
+    <p class="sub" id="statusText">Please wait a few seconds...</p>
+
+    <div class="ad-slot" id="adSlot">
+      <!-- Paste your ad network's ad code here, e.g. Adsterra banner/native code -->
+      Ad space
+    </div>
+
+    <div class="timer-ring" id="timerRing" style="--pct:0">
+      <span id="timerNum">8</span>
+    </div>
+
+    <a href="#" class="btn" id="continueBtn">Continue to link</a>
+  </div>
+
+<script>
+  // ---------------------------------------------------------------
+  // PROJECT LOOKUP TABLE
+  // Add one line per project: "id-you-choose": "https://real-link.com"
+  // The "id" is what goes in the URL, e.g. ?id=project1
+  // ---------------------------------------------------------------
+  const PROJECTS = {
+    "project1": "https://github.com/Meghamittal0920/Gojo",
+    "project2": "https://your-real-link-2.com"
+    // add more here...
+  };
+
+  const COUNTDOWN_SECONDS = 8;
+  // ---------------------------------------------------------------
+
+  const params = new URLSearchParams(window.location.search);
+  const projectId = params.get('id');
+  const destination = PROJECTS[projectId];
+
+  const ring = document.getElementById('timerRing');
+  const num = document.getElementById('timerNum');
+  const btn = document.getElementById('continueBtn');
+  const statusText = document.getElementById('statusText');
+  const titleText = document.getElementById('titleText');
+
+  if (!destination) {
+    // No valid project id in the URL
+    titleText.textContent = "Link not found";
+    statusText.innerHTML = '<span class="error">This link is invalid or missing a project ID.</span>';
+    document.getElementById('adSlot').style.display = 'none';
+    ring.style.display = 'none';
+    btn.style.display = 'none';
+  } else {
+    btn.href = destination;
+    let secondsLeft = COUNTDOWN_SECONDS;
+
+    const interval = setInterval(() => {
+      secondsLeft--;
+      const pct = Math.round(((COUNTDOWN_SECONDS - secondsLeft) / COUNTDOWN_SECONDS) * 100);
+      ring.style.setProperty('--pct', pct);
+      num.textContent = secondsLeft > 0 ? secondsLeft : '✓';
+
+      if (secondsLeft <= 0) {
+        clearInterval(interval);
+        btn.classList.add('active');
+        statusText.textContent = 'Your link is ready.';
+      }
+    }, 1000);
+  }
+</script>
+
+</body>
+</html>
